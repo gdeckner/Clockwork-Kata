@@ -25,6 +25,7 @@ namespace Clockwork.API.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("ClientIp");
+                    b.Property<string>("TimeZone");
 
                     b.Property<DateTime>("Time");
 

@@ -1,21 +1,102 @@
-﻿<script>
-function UserAction() {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("output").innerHTML = this.responseText;
-        }
-    };
-    xhttp.open("GET", "http://127.0.0.1:5000/api/currenttime", true);
-    xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send();
+﻿
+<script>
+    function GetLocalTime() {
+        var xhttp = new XMLHttpRequest();
 
-}
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+
+                let pulledTime = JSON.parse(this.responseText);
+
+                document.getElementById("output").innerHTML = FormatTime(pulledTime.time);
+                FormatTime(pulledTime);
+
+            }
+        };
+        xhttp.open("GET", "http://localhost:57074/api/currenttime", true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send();
+
+    }
+    function FormatTime(pulledTime) {
+        var result = "";
+        var time = new Date(pulledTime);
+        var hours = time.getHours();
+        var minutes = time.getMinutes();
+        var seconds = time.getSeconds();
+        var period = "AM";
+        if (hours == 0) {
+            hours = 12
+        }
+        else if (hours > 12) {
+            hours = hours - 12;
+            period = "PM";
+        }
+
+
+        hours = (hours < 10) ? "0" + hours : hours;
+        minutes = (minutes < 10) ? "0" + minutes : minutes;
+        seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+        var result = hours + ":" + minutes + ":" + seconds + " " + period;
+
+        return result;
+
+    }
+
+
+    function GetAllTimes() {
+        var xhttp = new XMLHttpRequest();
+        var timeListRespones = "";
+        xhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+
+                timeListResponses = JSON.parse(this.responseText);
+            }
+
+
+        };
+        xhttp.open("GET", "http://localhost:57074/api/currenttime/pullTimes", true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send();
+
+        return timeListResponses;
+    }
+    function InsertToTable(timeListResponses) {
+
+    }
+
+
+
 </script>
+
 
 <h2>AWH Clockwork Project @ViewData["Version"] on @ViewData["Runtime"]!</h2>
 
 
-<button type="submit" onclick="UserAction()">Get the time</button>
+<button type="submit" onclick="GetLocalTime()">Get the time</button>
+<button type="submit" onclick="GetAllTimes()">Get this timezone time!</button>
 
-<p id="output"></p>
+<div id="output" class="clock"></div>
+
+<p id="massOutput"></p>
+
+<div>
+    <select>
+        @foreach (TimeZoneInfo x in TimeZoneInfo.GetSystemTimeZones())
+        {
+            <option value="@x.Id">@x</option>
+        }
+    </select>
+</div>
+<table>
+    <tr>
+        <th>Time Query Entry ID</th>
+        <th>Time</th>
+        <th>UTC Time</th>
+        <th>Client Ip Address</th>
+        <th>Selected Time Zone</th>
+    </tr>
+    <tr>
+    </tr>
+</table>

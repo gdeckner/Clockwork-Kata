@@ -1,25 +1,31 @@
 ﻿using System;
 using Microsoft.AspNetCore.Mvc;
 using Clockwork.API.Models;
+using System.Collections.Generic;
 
 namespace Clockwork.API.Controllers
 {
-    [Route("api/[controller]")]
+
     public class CurrentTimeController : Controller
+
     {
+        [Route("api/[controller]")]
         // GET api/currenttime
         [HttpGet]
         public IActionResult Get()
         {
             var utcTime = DateTime.UtcNow;
+            var localTimeZone = TimeZoneInfo.Local;
             var serverTime = DateTime.Now;
             var ip = this.HttpContext.Connection.RemoteIpAddress.ToString();
 
             var returnVal = new CurrentTimeQuery
             {
                 UTCTime = utcTime,
+                TimeZone = localTimeZone.StandardName,
                 ClientIp = ip,
                 Time = serverTime
+                
             };
 
             using (var db = new ClockworkContext())
@@ -27,7 +33,7 @@ namespace Clockwork.API.Controllers
                 db.CurrentTimeQueries.Add(returnVal);
                 var count = db.SaveChanges();
                 Console.WriteLine("{0} records saved to database", count);
-
+             
                 Console.WriteLine();
                 foreach (var CurrentTimeQuery in db.CurrentTimeQueries)
                 {
@@ -36,6 +42,21 @@ namespace Clockwork.API.Controllers
             }
 
             return Ok(returnVal);
+        }
+        //GET api/pullTimes
+        [Route("api/[controller]/pullTimes")]
+        [HttpGet]
+        public IActionResult PullTimes()
+        {
+            var returnVals = new List<CurrentTimeQuery>();
+            using (var db = new ClockworkContext())
+            {
+                foreach (var currentTimeQuery in db.CurrentTimeQueries)
+                {
+                    returnVals.Add(currentTimeQuery);
+                }
+            }
+            return Ok(returnVals);
         }
     }
 }
