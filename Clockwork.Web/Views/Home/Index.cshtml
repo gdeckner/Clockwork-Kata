@@ -12,7 +12,7 @@
 
             }
         };
-        xhttp.open("GET", "http://localhost:57074/api/currenttime", true);
+        xhttp.open("GET", "http://localhost:57074/api/currenttime/?timeZoneId=" + "Atlantic Standard Time" , true);
         xhttp.setRequestHeader("Content-type", "application/json");
         xhttp.send();
 
@@ -64,7 +64,7 @@
 
 
         };
-        xhttp.open("GET", "http://localhost:57074/api/currenttime/pullTimes", true);
+        xhttp.open("GET", "http://localhost:57074/api/currenttime/pullTimes/", true);
         xhttp.setRequestHeader("Content-type", "application/json");
         xhttp.send();
 

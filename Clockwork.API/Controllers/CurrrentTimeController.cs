@@ -12,28 +12,33 @@ namespace Clockwork.API.Controllers
         [Route("api/[controller]")]
         // GET api/currenttime
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get(string timeZoneId)
         {
+
             var utcTime = DateTime.UtcNow;
             var localTimeZone = TimeZoneInfo.Local;
             var serverTime = DateTime.Now;
             var ip = this.HttpContext.Connection.RemoteIpAddress.ToString();
-
             var returnVal = new CurrentTimeQuery
             {
                 UTCTime = utcTime,
                 TimeZone = localTimeZone.StandardName,
                 ClientIp = ip,
                 Time = serverTime
-                
+
             };
+            if (timeZoneId != null)
+            {
+                returnVal.Time = TimeZoneInfo.ConvertTimeFromUtc(utcTime,TimeZoneInfo.FindSystemTimeZoneById(timeZoneId));
+            }
+
 
             using (var db = new ClockworkContext())
             {
                 db.CurrentTimeQueries.Add(returnVal);
                 var count = db.SaveChanges();
                 Console.WriteLine("{0} records saved to database", count);
-             
+
                 Console.WriteLine();
                 foreach (var CurrentTimeQuery in db.CurrentTimeQueries)
                 {
