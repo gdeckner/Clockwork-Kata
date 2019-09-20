@@ -7,7 +7,6 @@
             if (this.readyState == 4 && this.status == 200) {
 
                 let pulledTime = JSON.parse(this.responseText);
-
                 document.getElementById("output").innerHTML = FormatTime(pulledTime.time);
                 FormatTime(pulledTime);
 
@@ -47,11 +46,20 @@
 
     function GetAllTimes() {
         var xhttp = new XMLHttpRequest();
-        var timeListRespones = "";
+
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
 
-                timeListResponses = JSON.parse(this.responseText);
+                var timeListResponses = JSON.parse(this.responseText);
+                for (i = timeListResponses.length - 1; i > 0; i--) {
+                    InsertDataToTable(
+                        timeListResponses[i].currentTimeQueryId,
+                        timeListResponses[i].clientIp,
+                        timeListResponses[i].utcTime,
+                        timeListResponses[i].time,
+                        timeListResponses[i].timeZone,i)
+                }
+                
             }
 
 
@@ -60,12 +68,24 @@
         xhttp.setRequestHeader("Content-type", "application/json");
         xhttp.send();
 
-        return timeListResponses;
+       
     }
-    function InsertToTable(timeListResponses) {
+    function InsertDataToTable(currentTimeQuery, clientIp, utctime, time, timeZone,i) {
+        var table = document.getElementById("myTable");
+        var row = table.insertRow(0);
+        var cell1 = row.insertCell(0);
+        var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
+        var cell5 = row.insertCell(4);
+
+        cell1.innerHTML = currentTimeQuery;
+        cell2.innerHTML = clientIp;
+        cell3.innerHTML = utctime;
+        cell4.innerHTML = time;
+        cell5.innerHTML = timeZone;
 
     }
-
 
 
 </script>
@@ -89,7 +109,7 @@
         }
     </select>
 </div>
-<table>
+<table id="myTable">
     <tr>
         <th>Time Query Entry ID</th>
         <th>Time</th>
