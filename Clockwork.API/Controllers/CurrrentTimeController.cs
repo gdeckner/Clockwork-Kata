@@ -30,6 +30,7 @@ namespace Clockwork.API.Controllers
             if (timeZoneId != null)
             {
                 returnVal.Time = TimeZoneInfo.ConvertTimeFromUtc(utcTime,TimeZoneInfo.FindSystemTimeZoneById(timeZoneId));
+                returnVal.TimeZone = timeZoneId;
             }
 
 

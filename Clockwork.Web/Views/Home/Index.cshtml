@@ -2,7 +2,9 @@
 <script>
     function GetLocalTime() {
         var xhttp = new XMLHttpRequest();
-
+        var selectTimeZoneList = document.getElementById("timeZoneSelect");
+        var timeZoneSelected = selectTimeZoneList[selectTimeZoneList.selectedIndex].value;
+        
         xhttp.onreadystatechange = function () {
             if (this.readyState == 4 && this.status == 200) {
 
@@ -10,9 +12,11 @@
                 document.getElementById("output").innerHTML = FormatTime(pulledTime.time);
                 FormatTime(pulledTime);
 
+
+
             }
         };
-        xhttp.open("GET", "http://localhost:57074/api/currenttime/?timeZoneId=" + "Atlantic Standard Time" , true);
+        xhttp.open("GET", "http://localhost:57074/api/currenttime/?timeZoneId=" + timeZoneSelected, true);
         xhttp.setRequestHeader("Content-type", "application/json");
         xhttp.send();
 
@@ -59,7 +63,7 @@
                         timeListResponses[i].time,
                         timeListResponses[i].timeZone)
                 }
-                
+
             }
 
 
@@ -68,7 +72,7 @@
         xhttp.setRequestHeader("Content-type", "application/json");
         xhttp.send();
 
-       
+
     }
     function InsertDataToTable(currentTimeQuery, clientIp, utctime, time, timeZone) {
         var table = document.getElementById("myTable");
@@ -98,11 +102,11 @@
 <button type="submit" onclick="GetAllTimes()">Get this timezone time!</button>
 
 <div id="output" class="clock"></div>
-
+<div id="test"></div>
 <p id="massOutput"></p>
 
 <div>
-    <select>
+    <select id="timeZoneSelect">
         @foreach (TimeZoneInfo x in TimeZoneInfo.GetSystemTimeZones())
         {
             <option value="@x.Id">@x</option>
