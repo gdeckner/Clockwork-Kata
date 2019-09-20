@@ -16,13 +16,12 @@ namespace Clockwork.API.Controllers
         {
 
             var utcTime = DateTime.UtcNow;
-            var localTimeZone = TimeZoneInfo.Local;
-            var serverTime = DateTime.Now;
+            var serverTime = TimeZoneInfo.ConvertTimeFromUtc(utcTime, TimeZoneInfo.FindSystemTimeZoneById(timeZoneId));
             var ip = this.HttpContext.Connection.RemoteIpAddress.ToString();
             var returnVal = new CurrentTimeQuery
             {
                 UTCTime = utcTime,
-                TimeZone = localTimeZone.StandardName,
+                TimeZone = timeZoneId,
                 ClientIp = ip,
                 Time = serverTime
 
@@ -64,5 +63,22 @@ namespace Clockwork.API.Controllers
             }
             return Ok(returnVals);
         }
+        [Route("api/[controller]/timeZoneList")]
+        [HttpGet]
+        public IActionResult TimeZonesList()
+        {
+            var returnVals = TimeZoneInfo.GetSystemTimeZones();
+
+            return Ok(returnVals);
+        }
+        [Route("api/[controller]/setLocalTimeZone")]
+        [HttpGet]
+        public IActionResult SetLocalTimeZone()
+        {
+            var returnVals = TimeZoneInfo.Local.StandardName;
+
+            return Ok(returnVals);
+        }
+       
     }
 }

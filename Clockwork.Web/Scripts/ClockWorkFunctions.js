@@ -1,5 +1,7 @@
 ﻿
 function GetLocalTime() {
+    TimeZoneList();
+    
     var xhttp = new XMLHttpRequest();
     var selectTimeZoneList = document.getElementById("timeZoneSelect");
     var timeZoneSelected = selectTimeZoneList[selectTimeZoneList.selectedIndex].value;
@@ -22,6 +24,7 @@ function GetLocalTime() {
     xhttp.open("GET", "http://localhost:57074/api/currenttime/?timeZoneId=" + timeZoneSelected, true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send();
+
 }
 function FormatTime(pulledTime) {
     var result = "";
@@ -51,7 +54,7 @@ function FormatTime(pulledTime) {
 
 function GetAllTimes() {
     var xhttp = new XMLHttpRequest();
-
+   
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
 
@@ -64,7 +67,7 @@ function GetAllTimes() {
                     timeListResponses[i].time,
                     timeListResponses[i].timeZone)
             }
-
+            SetLocalTimeZone();
         }
 
 
@@ -91,6 +94,56 @@ function InsertDataToTable(currentTimeQuery, clientIp, utctime, time, timeZone) 
     cell4.innerHTML = time;
     cell5.innerHTML = timeZone;
 
+}
+function TimeZoneList() {
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var x = document.getElementById("timeZoneSelect")
+            var timeZoneList = JSON.parse(this.responseText)
+            var localZone = new Date();
+
+
+            document.getElementById("test").innerHTML = localZone.toTimeString();
+
+            for (i = 0; timeZoneList.length > i; i++) {
+
+                var option = document.createElement("option");
+                option.setAttribute("value", timeZoneList[i].Id);
+
+                option.text = timeZoneList[i].DisplayName;
+                x.appendChild(option);
+
+
+            }
+        }
+
+    };
+    xhttp.open("GET", "http://localhost:57074/api/currenttime/timeZoneList", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send();
+}
+function SetLocalTimeZone() {
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var x = document.getElementById("timeZoneSelect")
+            var localTimeZone = this.responseText;
+
+            for (i = 0; i < x.length; i++) {
+                if (x[i].value == localTimeZone) {
+                    x[i].setAttribute("selected", true);
+                }
+            }
+
+        }
+    }
+
+    xhttp.open("GET", "http://localhost:57074/api/currenttime/setLocalTimeZone", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send();
 }
 
 
