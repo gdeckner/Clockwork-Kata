@@ -51,13 +51,13 @@
             if (this.readyState == 4 && this.status == 200) {
 
                 var timeListResponses = JSON.parse(this.responseText);
-                for (i = timeListResponses.length - 1; i > 0; i--) {
+                for (i = 0; i < timeListResponses.length - 1; i++) {
                     InsertDataToTable(
                         timeListResponses[i].currentTimeQueryId,
                         timeListResponses[i].clientIp,
                         timeListResponses[i].utcTime,
                         timeListResponses[i].time,
-                        timeListResponses[i].timeZone,i)
+                        timeListResponses[i].timeZone)
                 }
                 
             }
@@ -70,7 +70,7 @@
 
        
     }
-    function InsertDataToTable(currentTimeQuery, clientIp, utctime, time, timeZone,i) {
+    function InsertDataToTable(currentTimeQuery, clientIp, utctime, time, timeZone) {
         var table = document.getElementById("myTable");
         var row = table.insertRow(0);
         var cell1 = row.insertCell(0);
