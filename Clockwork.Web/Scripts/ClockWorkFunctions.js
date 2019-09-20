@@ -10,8 +10,7 @@ function GetLocalTime() {
 
             let pulledTime = JSON.parse(this.responseText);
             document.getElementById("output").innerHTML = FormatTime(pulledTime.time);
-            FormatTime(pulledTime);
-
+           
             InsertDataToTable(
                 pulledTime.currentTimeQueryId,
                 pulledTime.clientIp,
@@ -39,8 +38,6 @@ function FormatTime(pulledTime) {
         hours = hours - 12;
         period = "PM";
     }
-
-
     hours = (hours < 10) ? "0" + hours : hours;
     minutes = (minutes < 10) ? "0" + minutes : minutes;
     seconds = (seconds < 10) ? "0" + seconds : seconds;
@@ -75,9 +72,18 @@ function GetAllTimes() {
 
 
 }
-function InsertDataToTable(currentTimeQuery, clientIp, utctime, time, timeZone) {
+function InsertDataToTable(currentTimeQuery, clientIp, utcTime, time, timeZone) {
+
+    var utcDate = new Date(utcTime);
+    var timeDate = new Date(time);
     var table = document.getElementById("myTable");
     var row = table.insertRow(1);
+    row.setAttribute("class", "dataRows");
+    
+    
+    var formattedUtcTime = (utcDate.getMonth() + 1) + '/' + utcDate.getDate() + '/' + utcDate.getFullYear() + "&nbsp &nbsp &nbsp &nbsp &nbsp" + FormatTime(utcTime);
+    var formattedTime = (timeDate.getMonth() + 1) + '/' + timeDate.getDate() + '/' + timeDate.getFullYear() + "&nbsp &nbsp &nbsp &nbsp &nbsp" + FormatTime(timeDate);
+
     var cell1 = row.insertCell(0);
     var cell2 = row.insertCell(1);
     var cell3 = row.insertCell(2);
@@ -86,8 +92,8 @@ function InsertDataToTable(currentTimeQuery, clientIp, utctime, time, timeZone) 
 
     cell1.innerHTML = currentTimeQuery;
     cell2.innerHTML = clientIp;
-    cell3.innerHTML = utctime;
-    cell4.innerHTML = time;
+    cell3.innerHTML = formattedUtcTime;
+    cell4.innerHTML = formattedTime;
     cell5.innerHTML = timeZone;
 
 }
