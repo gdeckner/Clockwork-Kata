@@ -3,11 +3,14 @@
 <html>
 <head>
     <script type="text/javascript" src="~/Scripts/ClockWorkFunctions.js"></script>
+    <link href="~/Styles/defaultStyle.css" rel="stylesheet" type="text/css"/>
     <title>@ViewBag.Title</title>
     <meta charset="utf-8" />
-</head>
-<body>
-    @RenderBody()
     
+   
+</head>
+<body onload="StartUp();">
+    @RenderBody()
+   
 </body>
 </html>

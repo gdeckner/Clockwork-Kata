@@ -1,7 +1,6 @@
 ﻿
 function GetLocalTime() {
-    TimeZoneList();
-    
+
     var xhttp = new XMLHttpRequest();
     var selectTimeZoneList = document.getElementById("timeZoneSelect");
     var timeZoneSelected = selectTimeZoneList[selectTimeZoneList.selectedIndex].value;
@@ -50,11 +49,9 @@ function FormatTime(pulledTime) {
 
     return result;
 }
-
-
 function GetAllTimes() {
     var xhttp = new XMLHttpRequest();
-   
+
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
 
@@ -67,7 +64,7 @@ function GetAllTimes() {
                     timeListResponses[i].time,
                     timeListResponses[i].timeZone)
             }
-            SetLocalTimeZone();
+           
         }
 
 
@@ -78,10 +75,9 @@ function GetAllTimes() {
 
 
 }
-
 function InsertDataToTable(currentTimeQuery, clientIp, utctime, time, timeZone) {
     var table = document.getElementById("myTable");
-    var row = table.insertRow(0);
+    var row = table.insertRow(1);
     var cell1 = row.insertCell(0);
     var cell2 = row.insertCell(1);
     var cell3 = row.insertCell(2);
@@ -102,10 +98,6 @@ function TimeZoneList() {
         if (this.readyState == 4 && this.status == 200) {
             var x = document.getElementById("timeZoneSelect")
             var timeZoneList = JSON.parse(this.responseText)
-            var localZone = new Date();
-
-
-            document.getElementById("test").innerHTML = localZone.toTimeString();
 
             for (i = 0; timeZoneList.length > i; i++) {
 
@@ -120,7 +112,7 @@ function TimeZoneList() {
         }
 
     };
-    xhttp.open("GET", "http://localhost:57074/api/currenttime/timeZoneList", true);
+    xhttp.open("GET", "http://localhost:57074/api/currenttime/timeZoneList", false);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send();
 }
@@ -140,10 +132,14 @@ function SetLocalTimeZone() {
 
         }
     }
-
     xhttp.open("GET", "http://localhost:57074/api/currenttime/setLocalTimeZone", true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send();
+}
+function StartUp() {
+    TimeZoneList();
+    SetLocalTimeZone();
+    GetAllTimes();
 }
 
 
