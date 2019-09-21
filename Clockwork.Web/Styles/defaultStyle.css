@@ -26,11 +26,18 @@ h2{
   
     grid-column: 1/2;
     grid-row: 3/3;
+    margin: 20px;
    
+}
+#timeZoneSelect{
+    height: 100%;
 }
 #getTimeButton{
     grid-column: 2/3;
     grid-row: 3/3;
+    margin: 20px;
+    height: 40%;
+    
 }
 #dbTable{
     grid-column: 1/3;
@@ -60,6 +67,7 @@ td, th {
     text-align: center;
     grid-template-columns: auto auto auto;
     grid-template-rows: auto auto auto auto;
+    
     
 }
 .dataRows{

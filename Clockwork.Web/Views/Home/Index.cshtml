@@ -2,30 +2,30 @@
 
 
 <body>
+   
 
 
+    <div class="container">
+        <h2>AWH Clockwork Project @ViewData["Version"] on @ViewData["Runtime"]!</h2>
 
+        <div id="output" class="clock"></div>
+        <button type="submit" id="getTimeButton" onclick="GetLocalTime()">Get the time</button>
 
-<div class="container">
-<h2>AWH Clockwork Project @ViewData["Version"] on @ViewData["Runtime"]!</h2>
+        <div id="timeZoneContainer">
+            <select id="timeZoneSelect">
+            </select>
+        </div>
+        <table id="dbTable">
+            <tr>
+                <th>Query Id</th>
+                <th>Time</th>
+                <th>Time Zone Selected</th>
+                <th>Client Ip</th>
+                <th>UTC Time</th>
+            </tr>
 
-<div id="output" class="clock"></div>
-    <button type="submit" id="getTimeButton" onclick="GetLocalTime()">Get the time</button>
+        </table>
+     
 
-    <div id="timeZoneContainer">
-        <select id="timeZoneSelect">
-        </select>
     </div>
-    <table id="dbTable">
-        <tr>
-            <th>Query Id</th>
-            <th>Time</th>
-            <th>Time Zone Selected</th>
-            <th>Client Ip</th>
-            <th>UTC Time</th>
-        </tr>
-
-    </table>
-
-</div>
 </body>

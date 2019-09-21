@@ -1,16 +1,20 @@
-﻿
+﻿var timeStore = "";
+var isNewTime = 0;
+
 function GetLocalTime() {
 
     var xhttp = new XMLHttpRequest();
     var selectTimeZoneList = document.getElementById("timeZoneSelect");
     var timeZoneSelected = selectTimeZoneList[selectTimeZoneList.selectedIndex].value;
 
+    isNewTime = 1;
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
 
-            let pulledTime = JSON.parse(this.responseText);
-            document.getElementById("output").innerHTML = FormatTime(pulledTime.time);
-           
+            var pulledTime = JSON.parse(this.responseText);
+            timeStore = pulledTime.time;
+
+
             InsertDataToTable(
                 pulledTime.currentTimeQueryId,
                 pulledTime.clientIp,
@@ -18,6 +22,7 @@ function GetLocalTime() {
                 pulledTime.time,
                 pulledTime.timeZone)
         }
+
     };
     if (timeZoneSelected.includes("+")) {
         timeZoneSelected = timeZoneSelected.replace("+", "%2B");
@@ -49,6 +54,23 @@ function FormatTime(pulledTime) {
 
     return result;
 }
+function UpdateClock() {
+
+    var newTime = new Date(timeStore);
+    newTime.setSeconds(newTime.getSeconds() + 1);
+
+    var formatttedTime = FormatTime(newTime);
+
+    if (isNewTime === 0) {
+        timeStore = newTime;
+    }
+    document.getElementById("output").innerHTML = formatttedTime;
+
+
+    isNewTime = 0;
+    setTimeout(UpdateClock, 1000);
+
+}
 function GetAllTimes() {
     var xhttp = new XMLHttpRequest();
 
@@ -64,7 +86,7 @@ function GetAllTimes() {
                     timeListResponses[i].time,
                     timeListResponses[i].timeZone)
             }
-           
+
         }
 
 
@@ -82,8 +104,8 @@ function InsertDataToTable(currentTimeQuery, clientIp, utcTime, time, timeZone) 
     var table = document.getElementById("dbTable");
     var row = table.insertRow(1);
     row.setAttribute("class", "dataRows");
-    
-    
+
+
     var formattedUtcTime = (utcDate.getMonth() + 1) + '/' + utcDate.getDate() + '/' + utcDate.getFullYear() + "&nbsp &nbsp &nbsp &nbsp &nbsp" + FormatTime(utcTime);
     var formattedTime = (timeDate.getMonth() + 1) + '/' + timeDate.getDate() + '/' + timeDate.getFullYear() + "&nbsp &nbsp &nbsp &nbsp &nbsp" + FormatTime(timeDate);
 
@@ -149,6 +171,7 @@ function StartUp() {
     TimeZoneList();
     SetLocalTimeZone();
     GetAllTimes();
+    UpdateClock();
 }
 
 
