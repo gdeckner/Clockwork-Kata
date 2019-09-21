@@ -19,6 +19,9 @@ function GetLocalTime() {
                 pulledTime.timeZone)
         }
     };
+    if (timeZoneSelected.includes("+")) {
+        timeZoneSelected = timeZoneSelected.replace("+", "%2B");
+    }
     xhttp.open("GET", "http://localhost:57074/api/currenttime/?timeZoneId=" + timeZoneSelected, true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send();
@@ -76,7 +79,7 @@ function InsertDataToTable(currentTimeQuery, clientIp, utcTime, time, timeZone) 
 
     var utcDate = new Date(utcTime);
     var timeDate = new Date(time);
-    var table = document.getElementById("myTable");
+    var table = document.getElementById("dbTable");
     var row = table.insertRow(1);
     row.setAttribute("class", "dataRows");
     
@@ -91,10 +94,10 @@ function InsertDataToTable(currentTimeQuery, clientIp, utcTime, time, timeZone) 
     var cell5 = row.insertCell(4);
 
     cell1.innerHTML = currentTimeQuery;
-    cell2.innerHTML = clientIp;
-    cell3.innerHTML = formattedUtcTime;
-    cell4.innerHTML = formattedTime;
-    cell5.innerHTML = timeZone;
+    cell2.innerHTML = formattedTime;
+    cell3.innerHTML = timeZone;;
+    cell4.innerHTML = clientIp;
+    cell5.innerHTML = formattedUtcTime;
 
 }
 function TimeZoneList() {

@@ -77,7 +77,6 @@
   <ItemGroup>
     <Folder Include="Content\" />
     <Folder Include="Models\" />
-    <Folder Include="Styles\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\HomeController.cs" />
@@ -89,6 +88,7 @@
   <ItemGroup>
     <Content Include="main.css" />
     <Content Include="Scripts\ClockWorkFunctions.js" />
+    <Content Include="Styles\defaultStyle.css" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />

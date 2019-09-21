@@ -26,11 +26,7 @@ namespace Clockwork.API.Controllers
                 Time = serverTime
 
             };
-            if (timeZoneId != null)
-            {
-                returnVal.Time = TimeZoneInfo.ConvertTimeFromUtc(utcTime,TimeZoneInfo.FindSystemTimeZoneById(timeZoneId));
-                returnVal.TimeZone = timeZoneId;
-            }
+            
 
 
             using (var db = new ClockworkContext())
