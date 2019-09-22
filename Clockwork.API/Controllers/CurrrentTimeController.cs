@@ -47,6 +47,7 @@ namespace Clockwork.API.Controllers
         //GET api/pullTimes
         [Route("api/[controller]/pullTimes")]
         [HttpGet]
+        //Retrieves all the database entries and returns it
         public IActionResult PullTimes()
         {
             var returnVals = new List<CurrentTimeQuery>();
@@ -61,6 +62,7 @@ namespace Clockwork.API.Controllers
         }
         [Route("api/[controller]/timeZoneList")]
         [HttpGet]
+        //Gets a list of time zones and returns it
         public IActionResult TimeZonesList()
         {
             var returnVals = TimeZoneInfo.GetSystemTimeZones();
@@ -69,6 +71,7 @@ namespace Clockwork.API.Controllers
         }
         [Route("api/[controller]/setLocalTimeZone")]
         [HttpGet]
+        //Retrieves the local time zone of the client computer to set the default time zone for the list.
         public IActionResult SetLocalTimeZone()
         {
             var returnVals = TimeZoneInfo.Local.StandardName;

@@ -55,19 +55,20 @@ function FormatTime(pulledTime) {
     return result;
 }
 function UpdateClock() {
+    if (!timeStore == "") {
+        var newTime = new Date(timeStore);
+        newTime.setSeconds(newTime.getSeconds() + 1);
+        var formatttedTime = FormatTime(newTime);
 
-    var newTime = new Date(timeStore);
-    newTime.setSeconds(newTime.getSeconds() + 1);
+        if (isNewTime === 0) {
+            timeStore = newTime;
+        }
+        document.getElementById("output").innerHTML = formatttedTime;
 
-    var formatttedTime = FormatTime(newTime);
 
-    if (isNewTime === 0) {
-        timeStore = newTime;
+        isNewTime = 0;
     }
-    document.getElementById("output").innerHTML = formatttedTime;
 
-
-    isNewTime = 0;
     setTimeout(UpdateClock, 1000);
 
 }
