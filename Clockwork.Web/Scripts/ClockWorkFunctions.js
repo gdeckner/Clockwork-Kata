@@ -32,6 +32,7 @@ function GetLocalTime() {
     xhttp.send();
 
 }
+//Takes the time and formats it into a prettier format.
 function FormatTime(pulledTime) {
     var result = "";
     var time = new Date(pulledTime);
@@ -54,6 +55,7 @@ function FormatTime(pulledTime) {
 
     return result;
 }
+//Is called in the Startup Function, and continuously increments the time by 1 second every 1 second. It also checks if the client just queried for a new time and updates the loop with the new time.
 function UpdateClock() {
     if (!timeStore == "") {
         var newTime = new Date(timeStore);
@@ -72,6 +74,7 @@ function UpdateClock() {
     setTimeout(UpdateClock, 1000);
 
 }
+//Pulls all the times from the database then calls the InsertDataToTable Function to populate the tables.
 function GetAllTimes() {
     var xhttp = new XMLHttpRequest();
 
@@ -98,6 +101,7 @@ function GetAllTimes() {
 
 
 }
+//Inserts the pulled data from the server into the data rows, it also calls upon the FormatTime function to help display the time better.
 function InsertDataToTable(currentTimeQuery, clientIp, utcTime, time, timeZone) {
 
 
@@ -130,6 +134,7 @@ function InsertDataToTable(currentTimeQuery, clientIp, utcTime, time, timeZone) 
     cell5.innerHTML = formattedUtcTime;
 
 }
+// Gets all the Timezones from the server/api then populates the drop down
 function TimeZoneList() {
     var xhttp = new XMLHttpRequest();
 
@@ -155,6 +160,7 @@ function TimeZoneList() {
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send();
 }
+//Upon loading the page it sets the drop down time zone list to the clients current time zone.
 function SetLocalTimeZone() {
     var xhttp = new XMLHttpRequest();
 
@@ -175,6 +181,7 @@ function SetLocalTimeZone() {
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send();
 }
+
 function StartUp() {
     TimeZoneList();
     SetLocalTimeZone();
