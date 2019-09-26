@@ -100,14 +100,21 @@ function GetAllTimes() {
 }
 function InsertDataToTable(currentTimeQuery, clientIp, utcTime, time, timeZone) {
 
-    var utcDate = new Date(utcTime);
+
+    var utcDate = "";
+    if (isNewTime == 1) {
+        utcDate = new Date(utcTime.substring(0, utcTime.length - 1));
+    }
+    else {
+        utcDate = new Date(utcTime);
+    }
     var timeDate = new Date(time);
     var table = document.getElementById("dbTable");
     var row = table.insertRow(1);
     row.setAttribute("class", "dataRows");
 
 
-    var formattedUtcTime = (utcDate.getMonth() + 1) + '/' + utcDate.getDate() + '/' + utcDate.getFullYear() + "&nbsp &nbsp &nbsp &nbsp &nbsp" + FormatTime(utcTime);
+    var formattedUtcTime = (utcDate.getUTCMonth() + 1) + '/' + utcDate.getUTCDate() + '/' + utcDate.getUTCFullYear() + "&nbsp &nbsp &nbsp &nbsp &nbsp" + FormatTime(utcDate);
     var formattedTime = (timeDate.getMonth() + 1) + '/' + timeDate.getDate() + '/' + timeDate.getFullYear() + "&nbsp &nbsp &nbsp &nbsp &nbsp" + FormatTime(timeDate);
 
     var cell1 = row.insertCell(0);
